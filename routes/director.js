@@ -127,13 +127,14 @@ router.put('/:director_id',(req, res,next)=> {
     });
 });
 
-router.delete('/:movie_id',(req, res,next)=> {
+//silme işlemi
+router.delete('/:director_id',(req, res,next)=> {
     //res.send(req.params.movie_id);
-    const promise=Movie.findByIdAndRemove(req.params.movie_id,);
+    const promise=Director.findByIdAndRemove(req.params.director_id,);
 
     promise.then((data)=>{
         if(!data)
-            next({message : 'The movie was not found', code : 1});
+            next({message : 'The director was not found', code : 1});
         res.json(data);
     }).catch((err)=>{
         res.json(err);
