@@ -6,7 +6,7 @@ const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
 const movie = require('./routes/movie');
-
+const director = require('./routes/director');
 const app = express();
 //db connection
 const db= require('./helper/db.js')();
@@ -22,8 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/api/movie', movie);
-
+app.use('/api/movies', movie);
+app.use('/api/directors', director);
 // catch 404 and forward to error handler
 app.use((req, res, next)=> {
   next(createError(404));
@@ -37,7 +37,7 @@ app.use((err, req, res, next)=> {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json({error: {message: err.message,code: err.code}});
 });
 
 module.exports = app;
