@@ -4,7 +4,19 @@ const router = express.Router();
 //Models
 const Movie = require('../models/Movie');
 router.get('/',(req, res)=> {
-    const promise=Movie.find({});
+    const promise=Movie.aggregate([
+        {
+         $lookup :{
+             //hangi collectiondan veri alacağımız söylüyoruz
+             from: 'directors',
+             localField: 'director_id',
+             foreignField : '_id',
+             as: 'director'
+         }
+        },{
+        $unwind : '$director'
+        }
+    ]);
     promise.then((data)=>{
         res.json(data);
     }).catch((err)=>{
